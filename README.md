@@ -64,6 +64,35 @@ docker-compose up --build -d
 
 A partir daqui tudo pelo terminal do VSCode!
 
+
+### 8. Habilitar hot reload
+
+Ao alterar o código você vai notar que a página não atualiza automaticamente. Isso acontece porque o Vite por padrão usa eventos nativos do sistema operacional para detectar mudanças, e esses eventos não chegam até o container no Windows.
+
+Substitui o conteúdo do `vite.config.js` por:
+
+```js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    watch: {
+      usePolling: true,
+    },
+    host: true,
+  },
+})
+```
+
+Reinicia o container usando um terminal **fora do container** na pasta do projeto:
+
+```bash
+docker-compose up --build -d
+```
+
+✅ Agora o hot reload está funcionando!
 ---
 
 ## Comandos úteis
